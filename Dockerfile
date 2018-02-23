@@ -1,15 +1,8 @@
 FROM google/cloud-sdk:alpine
 
-WORKDIR /www
-
-EXPOSE 80
-
-# Pack project
-COPY . /www/
-
-# Ningx
+# Install additions
 RUN gcloud components install kubectl \
-    && apk add --update gettext
+    && apk add --update --no-cache gettext
 
 # Wait for rollout script
 COPY wait-for-rollout.sh /bin/wait-for-rollout

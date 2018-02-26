@@ -23,7 +23,7 @@ stages:
 
 deploy to production:
     stage: deploy
-    image: gitlab.enrise.com:5005/enrise/gcloudkubebox:latest
+    image: enrise/gcloudtoolbox:latest
     environment:
         name: production
         url: https://example.com

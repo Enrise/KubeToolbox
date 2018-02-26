@@ -4,7 +4,7 @@ Available commands in this box:
 
 - `gcloud`: google cloud commands
 - `kubectl`: kubernetes commands
-- `wait-for-rollout <namespace> <pod-name>`: waits for a rollout te be fully completed
+- `wait-for-rollout <namespace> <deployment-name>`: waits for a rollout te be fully completed
 - `envsubst '${ENV_VAR_1} ${ENV_VAR_2}' > dev/kube/production.yml < production.yml`: Replaces given environment variables in a file, into a new file
 
 # What should your .gitlab-ci.yml look like?

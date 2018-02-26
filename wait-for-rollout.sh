@@ -25,8 +25,8 @@ COUNT=0
 COMPLETED=false
 while [ $COMPLETED = false ]; do
     COUNT=$((COUNT+1))
-    kubectl -n "$1" get pods | grep "$2"
     kubectl -n "$1" get pods | grep "$2" | grep -v Running > /dev/null || COMPLETED=true
+    kubectl -n "$1" get pods | grep "$2"
     if [ $COMPLETED = false ]; then
         if [ $COUNT -ge 120 ]; then
             echo "Could not find a completed rollout within 120 tries. Terminating."

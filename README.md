@@ -4,7 +4,8 @@ Available commands in this box:
 
 - `gcloud`: google cloud commands
 - `kubectl`: kubernetes commands
-- `wait-for-rollout <namespace> <deployment-name>`: waits for a rollout te be fully completed
+- ~~`wait-for-rollout <namespace> <deployment-name>`: waits for a rollout te be fully completed~~
+    <br>Deprecated, use `kubectl rollout status deployment <deployment_name>` instead.
 - `envsubst '${ENV_VAR_1} ${ENV_VAR_2}' > dev/kube/production.yml < production.yml`: Replaces given environment variables in a file, into a new file
 
 # What should your .gitlab-ci.yml look like?
@@ -36,5 +37,5 @@ deploy to production:
     script:
         - envsubst < dev/kube/example.yml > example.yml
         - kubectl apply -f example.yml
-        - wait-for-rollout example-namespace example-deployment-name
+        - kubectl rollout status deployment example-deployment-name
 ```

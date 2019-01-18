@@ -12,6 +12,7 @@ RUN gcloud components install kubectl \
     && apk add --update --no-cache \
     gettext \
     make \
+    jq \
     && wget -q https://storage.googleapis.com/kubernetes-helm/helm-${HELM_VERSION}-linux-amd64.tar.gz -O - | tar -xzO linux-amd64/helm > /bin/helm \
     && chmod +x /bin/helm
 

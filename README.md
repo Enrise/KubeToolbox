@@ -6,6 +6,7 @@ Available commands in this box:
 - `kubectl`: kubernetes commands
 - `helm`: [helm kubernetes recipes](https://github.com/helm/helm)
 - `envsubst '${ENV_VAR_1} ${ENV_VAR_2}' > dev/kube/production.yml < production.yml`: Replaces given environment variables in a file, into a new file
+- `jq`: Tool to format json strings
 
 # What should your .gitlab-ci.yml look like?
 

@@ -8,7 +8,7 @@ ENV HELM_VERSION="v2.12.1"
 WORKDIR /opt/Enrise/GCloudToolBox
 
 # Install additions
-RUN gcloud components install kubectl \
+RUN gcloud components install beta kubectl \
     && apk add --update --no-cache \
     gettext \
     make \

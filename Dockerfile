@@ -2,7 +2,7 @@ FROM google/cloud-sdk:alpine
 
 # Note: Latest version of helm may be found at:
 # https://github.com/kubernetes/helm/releases
-ENV HELM_VERSION="v2.12.1"
+ENV HELM_VERSION="v2.13.1"
 
 # Set workdir
 WORKDIR /opt/Enrise/GCloudToolBox

@@ -1,4 +1,4 @@
-# Kubernetes box for Kubernetes deployment and management on various cloud providers
+# Kubernetes toolbox for various cloud providers
 
 Available commands in this box:
 

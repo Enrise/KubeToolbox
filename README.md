@@ -9,6 +9,12 @@ Available commands in this box:
 - `envsubst '${ENV_VAR_1} ${ENV_VAR_2}' < dev/kube/production.yml > production.yml`: Replaces given environment variables in a file, into a new file
 - `jq`: Tool to format json strings
 
+Currently the following cloud providers are supported:
+- [Amazon Web Services](https://aws.amazon.com/)
+- [Google Cloud Platform](https://cloud.google.com/)
+
+In the future new cloud providers such as Microsoft Azure can be easily added.
+
 # What should your .gitlab-ci.yml look like?
 
 Pick the right deployment job for you depending on what cloud platform you want to deploy to.
@@ -49,7 +55,7 @@ deploy to google cloud platform:
   only:
     - master
   before_script:
-    - connect-google-cloud "<gcp_service_account_key>" "<zone>" "<project>" "<cluster_name>"
+    - connect-google-cloud "<gcloud_service_account_key>" "<zone>" "<project>" "<cluster_name>"
   script:
     - envsubst < dev/kube/example.yml > example.yml
     - kubectl apply -f example.yml

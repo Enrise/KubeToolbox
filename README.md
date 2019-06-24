@@ -10,14 +10,17 @@ Available commands in this box:
 - `jq`: Tool to format json strings
 
 Currently the following cloud providers are supported:
-- [Amazon Web Services](https://aws.amazon.com/)
-- [Google Cloud Platform](https://cloud.google.com/)
+
+- [Google Cloud Platform](https://cloud.google.com/) (see [Google Cloud deployment](#google-cloud-deployment))
+- [Amazon Web Services](https://aws.amazon.com/) (see [Amazon deployment](#amazon-deployment))
 
 In the future new cloud providers such as Microsoft Azure can be easily added.
 
-# What should your .gitlab-ci.yml look like?
+# .gitlab-ci.yml example
 
-Pick the right deployment job for you depending on what cloud platform you want to deploy to.
+## Stages
+
+A deployment stage needs to be added to your pipeline
 
 ```yml
 # ======================
@@ -26,7 +29,43 @@ Pick the right deployment job for you depending on what cloud platform you want 
 
 stages:
   - deploy
+```
 
+## Google cloud deployment
+
+```yml
+deploy to google cloud platform:
+  stage: deploy
+  image: enrise/kube-toolbox:latest
+  environment:
+    name: production
+    url: https://example.com
+  only:
+    - master
+  before_script:
+    - connect-google-cloud $SERVICE_ACCOUNT_KEY_FILE "<region>" "<project>" "<cluster_name>"
+  script:
+    - envsubst < dev/kube/manifest.yml > manifest.yml
+    - kubectl apply -f manifest.yml
+    - kubectl rollout status deployment -n "<namespace>" "<deployment-name>"
+```
+
+Make sure the `$SERVICE_ACCOUNT_KEY_FILE` is a path to the service account json file, containing all
+secrets to properly connect to your account. In GitLab project settings you can configure a secret variable
+to be served as a file directly.
+
+If you only have the contents of the file available, create the
+key file manually first as follows:
+
+```yaml
+  before_script:
+    - echo $SERVICE_ACCOUNT_JSON_KEY > /tmp/.gcloud_private_key
+    - connect-google-cloud /tmp/.gcloud_private_key "<region>" "<project>" "<cluster_name>"
+```
+
+## Amazon deployment
+
+```yml
 # ======================
 # Production
 # ======================
@@ -42,29 +81,20 @@ deploy to amazon web services:
   before_script:
     - connect-aws "<aws_access_key_id>" "<aws_secret_access_key>" "<region>" "<cluster_name>"
   script:
-    - envsubst < dev/kube/example.yml > example.yml
-    - kubectl apply -f example.yml
-    - kubectl rollout status deployment -n example-namespace example-deployment-name
-
-deploy to google cloud platform:
-  stage: deploy
-  image: enrise/kube-toolbox:latest
-  environment:
-    name: production
-    url: https://example.com
-  only:
-    - master
-  before_script:
-    - connect-google-cloud "<gcloud_service_account_key>" "<zone>" "<project>" "<cluster_name>"
-  script:
-    - envsubst < dev/kube/example.yml > example.yml
-    - kubectl apply -f example.yml
-    - kubectl rollout status deployment -n example-namespace example-deployment-name
+    - envsubst < dev/kube/manifest.yml > manifest.yml
+    - kubectl apply -f manifest.yml
+    - kubectl rollout status deployment -n "<namespace>" "<deployment-name>"
 ```
 
-... or if you migrated from enrise/gcloudtoolbox you can still use the original commands:
+# GCloudToolbox migration
 
-```
+The enrise/kube-toolbox container is fully backwards compatible with the old enrise/gcloudtoolbox container, with the
+exception of the old `wait-for-rollout` script which has been removed. Simply update your deployment so it uses
+`kubectl rollout status deployment` instead, as shown in the examples above.
+
+If you migrated from enrise/gcloudtoolbox you can still use the original commands:
+
+```yml
 legacy deployment to google cloud platform:
   stage: deploy
   image: enrise/kube-toolbox:latest
@@ -82,9 +112,3 @@ legacy deployment to google cloud platform:
     - kubectl apply -f example.yml
     - kubectl rollout status deployment -n example-namespace example-deployment-name
 ```
-
-# Migration from enrise/gcloudtoolbox
-
-The enrise/kube-toolbox container is fully backwards compatible with the old enrise/gcloudtoolbox container, with the
-exception of the old `wait-for-rollout` script which has been removed. Simply update your deployment so it uses
-`kubectl rollout status deployment` instead, as shown in the examples above.

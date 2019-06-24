@@ -23,15 +23,11 @@ In the future new cloud providers such as Microsoft Azure can be easily added.
 A deployment stage needs to be added to your pipeline
 
 ```yml
-# ======================
-# CI Stages
-# ======================
-
 stages:
   - deploy
 ```
 
-## Google cloud deployment
+## Google Cloud deployment
 
 ```yml
 deploy to google cloud platform:
@@ -66,10 +62,6 @@ key file manually first as follows:
 ## Amazon deployment
 
 ```yml
-# ======================
-# Production
-# ======================
-
 deploy to amazon web services:
   stage: deploy
   image: enrise/kube-toolbox:latest

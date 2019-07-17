@@ -11,6 +11,7 @@ COPY bin/connect-google-cloud.sh /usr/local/bin/connect-google-cloud
 # Install tools.
 # Note: groff and less are needed for aws.
 RUN apk add --update --no-cache \
+        docker \
         gettext \
         groff \
         make \

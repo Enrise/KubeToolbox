@@ -3,6 +3,7 @@
 Available commands in this box:
 
 - `aws`: Amazon web services commands
+- `docker`: The docker client and server
 - `gcloud`: Google Cloud commands
 - `kubectl`: Kubernetes commands
 - `helm`: [Helm kubernetes recipes](https://github.com/helm/helm)

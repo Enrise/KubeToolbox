@@ -3,6 +3,7 @@
 Available commands in this box:
 
 - `aws`: Amazon web services commands
+- `az`: Microsoft Azure commands
 - `docker`: The docker client and server
 - `gcloud`: Google Cloud commands
 - `kubectl`: Kubernetes commands
@@ -14,8 +15,9 @@ Currently the following cloud providers are supported:
 
 - [Google Cloud Platform](https://cloud.google.com/) (see [Google Cloud deployment](#google-cloud-deployment))
 - [Amazon Web Services](https://aws.amazon.com/) (see [Amazon deployment](#amazon-deployment))
+- [Microsoft Azure](https://azure.microsoft.com) (see [Azure deployment](#azure-deployment))
 
-In the future new cloud providers such as Microsoft Azure can be easily added.
+In the future new cloud providers such as Alibaba Cloud can be easily added.
 
 # .gitlab-ci.yml example
 
@@ -78,6 +80,12 @@ deploy to amazon web services:
     - kubectl apply -f manifest.yml
     - kubectl rollout status deployment -n "<namespace>" "<deployment-name>"
 ```
+
+## Azure deployment
+
+For now, no connect-azure script exists yet. In the near future this will probably be added. Use the default `az aks get-credentials` commands instead.
+
+The rest of the kubectl commands can be exactly the same as for any other cloud provider, it's Kubernetes after all.
 
 # GCloudToolbox migration
 

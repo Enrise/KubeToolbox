@@ -1,3 +1,16 @@
+# New shit
+
+Every container has:
+
+- bash
+- connect-kubernetes
+- curl
+- docker
+- envsubst
+- jq
+
+# Old shit
+
 # Kubernetes toolbox for various cloud providers
 
 Available commands in this box:

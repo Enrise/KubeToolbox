@@ -14,7 +14,7 @@ script:
 after_success:
   - if [[ "$TRAVIS_PULL_REQUEST" == "false" && "$TRAVIS_BRANCH" == "master" ]]; then
     docker login -u="existenz" -p="$DOCKER_PASSWORD";
-    make push-$(printenv CLOUD)
+    make push-$(printenv CLOUD);
     fi
 
 notifications:

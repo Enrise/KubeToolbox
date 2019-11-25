@@ -1,34 +1,97 @@
-# Kubernetes toolbox for various cloud providers
+# KubeToolbox
 
-Available commands in this box:
+This container makes it super easy for you to connect to kubernetes and apply the manifests you desire.
 
-- `aws`: Amazon web services commands
+We have kube-toolboxes for:
+
+- [Amazon Web Services](https://aws.amazon.com/) (see [Amazon](#amazon))
+- [Microsoft Azure](https://azure.microsoft.com/) (see [Azure](#azure))
+- [Digital Ocean](https://www.digitalocean.com/products/kubernetes/) (see [Digital Ocean](#digital-ocean))
+- [Google Cloud Platform](https://cloud.google.com/) (see [Google Cloud](#google-cloud))
+
+Every kube-toolbox contains:
+
+- `bash`: the commonly used command line interface that's more advanced than `sh` itself
+- `connect-kubernetes`: Check below how this command should be used for your cloud provider
+- `curl`: Allows you to easily fire http requests
 - `docker`: The docker client and server
-- `gcloud`: Google Cloud commands
-- `kubectl`: Kubernetes commands
+- `envsubst '${ENV_VAR_1} ${ENV_VAR_2}' < dev/kube/production.yml > production.yml`: Replaces given environment
+  variables in a file, into a new file
 - `helm`: [Helm kubernetes recipes](https://github.com/helm/helm)
-- `envsubst '${ENV_VAR_1} ${ENV_VAR_2}' < dev/kube/production.yml > production.yml`: Replaces given environment variables in a file, into a new file
 - `jq`: Tool to format json strings
+- `kubectl`: Kubernetes command line interface
 
-Currently the following cloud providers are supported:
+# Cloud providers
 
-- [Google Cloud Platform](https://cloud.google.com/) (see [Google Cloud deployment](#google-cloud-deployment))
-- [Amazon Web Services](https://aws.amazon.com/) (see [Amazon deployment](#amazon-deployment))
+For every cloud provider we have an example of how to connect to your kubernetes cluster via a GitLab CI file.
 
-In the future new cloud providers such as Microsoft Azure can be easily added.
+## Amazon
 
-# .gitlab-ci.yml example
+The kube-toolbox for Azure is available with docker tag `enrise/kube-toolbox:amazon`.
 
-## Stages
+The following additional packages are available:
 
-A deployment stage needs to be added to your pipeline
+- `aws`: this cli allows you to connect and interact with your AWS account.
+- `connect-kubernetes "<aws_access_key_id>" "<aws_secret_access_key>" "<region>" "<cluster_name>"`:
+  connects you with your Kubernetes cluster on AWS directly
 
 ```yml
-stages:
-  - deploy
+deploy to amazon web services:
+  stage: deploy
+  image: enrise/kube-toolbox:amazon
+  environment:
+    name: production
+    url: https://example.com
+  only:
+    - master
+  before_script:
+    - connect-kubernetes "<aws_access_key_id>" "<aws_secret_access_key>" "<region>" "<cluster_name>"
+  script:
+    - envsubst < dev/kube/manifest.yml > manifest.yml
+    - kubectl apply -f manifest.yml
+    - kubectl rollout status deployment -n "<namespace>" "<deployment-name>"
 ```
 
-## Google Cloud deployment
+## Azure
+
+The kube-toolbox for Azure is available with docker tag `enrise/kube-toolbox:azure`.
+
+The following additional packages are available:
+
+- `az`: this cli allows you to connect and interact with your Azure account.
+- `connect-kubernetes "<azure_account_username>" <azure_account_password>" "<resource_group>" "<cluster_name>"`:
+  connects you with your Kubernetes cluster on Azure directly
+
+```yml
+deploy to amazon web services:
+  stage: deploy
+  image: enrise/kube-toolbox:azure
+  environment:
+    name: production
+    url: https://example.com
+  only:
+    - master
+  before_script:
+    - connect-kubernetes "<azure_account_username>" <azure_account_password>" "<resource_group>" "<cluster_name>"
+  script:
+    - envsubst < dev/kube/manifest.yml > manifest.yml
+    - kubectl apply -f manifest.yml
+    - kubectl rollout status deployment -n "<namespace>" "<deployment-name>"
+```
+
+## Digital Ocean
+
+TODO: We do not have a kube-toolbox for digital ocean available YET. This will come in the future.
+
+## Google Cloud
+
+The kube-toolbox for Google Cloud is available with docker tag `enrise/kube-toolbox:google`.
+
+The following additional packages are available:
+
+- `gcloud`: this cli allows you to connect and interact with your Google Cloud account.
+- `connect-kubernetes "<service_account_file>" <region>" "<project>" "<cluster_name>"`: connects you with your
+  Kubernetes cluster on the Google Cloud directly
 
 ```yml
 deploy to google cloud platform:
@@ -40,7 +103,7 @@ deploy to google cloud platform:
   only:
     - master
   before_script:
-    - connect-google-cloud $SERVICE_ACCOUNT_KEY_FILE "<region>" "<project>" "<cluster_name>"
+    - connect-kubernetes $SERVICE_ACCOUNT_KEY_FILE "<region>" "<project>" "<cluster_name>"
   script:
     - envsubst < dev/kube/manifest.yml > manifest.yml
     - kubectl apply -f manifest.yml
@@ -58,50 +121,4 @@ key file manually first as follows:
   before_script:
     - echo $SERVICE_ACCOUNT_JSON_KEY > /tmp/.gcloud_private_key
     - connect-google-cloud /tmp/.gcloud_private_key "<region>" "<project>" "<cluster_name>"
-```
-
-## Amazon deployment
-
-```yml
-deploy to amazon web services:
-  stage: deploy
-  image: enrise/kube-toolbox:latest
-  environment:
-    name: production
-    url: https://example.com
-  only:
-    - master
-  before_script:
-    - connect-aws "<aws_access_key_id>" "<aws_secret_access_key>" "<region>" "<cluster_name>"
-  script:
-    - envsubst < dev/kube/manifest.yml > manifest.yml
-    - kubectl apply -f manifest.yml
-    - kubectl rollout status deployment -n "<namespace>" "<deployment-name>"
-```
-
-# GCloudToolbox migration
-
-The enrise/kube-toolbox container is fully backwards compatible with the old enrise/gcloudtoolbox container, with the
-exception of the old `wait-for-rollout` script which has been removed. Simply update your deployment so it uses
-`kubectl rollout status deployment` instead, as shown in the examples above.
-
-If you migrated from enrise/gcloudtoolbox you can still use the original commands:
-
-```yml
-legacy deployment to google cloud platform:
-  stage: deploy
-  image: enrise/kube-toolbox:latest
-  environment:
-    name: production
-    url: https://example.com
-  only:
-    - master
-  before_script:
-    - echo $GCLOUD_SERVICE_ACCOUNT_KEY > /tmp/.gcloud_private_key
-    - gcloud auth activate-service-account --key-file /tmp/.gcloud_private_key
-    - gcloud container clusters get-credentials example-gcloud-id --project example-project --zone europe-example
-  script:
-    - envsubst < dev/kube/example.yml > example.yml
-    - kubectl apply -f example.yml
-    - kubectl rollout status deployment -n example-namespace example-deployment-name
 ```

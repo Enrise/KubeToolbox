@@ -96,7 +96,7 @@ The following additional packages are available:
 ```yml
 deploy to google cloud platform:
   stage: deploy
-  image: enrise/kube-toolbox:latest
+  image: enrise/kube-toolbox:google
   environment:
     name: production
     url: https://example.com

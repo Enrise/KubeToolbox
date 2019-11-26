@@ -63,7 +63,7 @@ The following additional packages are available:
   connects you with your Kubernetes cluster on Azure directly
 
 ```yml
-deploy to amazon web services:
+deploy to azure:
   stage: deploy
   image: enrise/kube-toolbox:azure
   environment:

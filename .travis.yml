@@ -3,6 +3,7 @@ matrix:
     - env: CLOUD=amazon
     - env: CLOUD=azure
     - env: CLOUD=google
+    - env: CLOUD=digital-ocean
 
 services:
   - docker

@@ -14,9 +14,7 @@ RUN apk add --update --no-cache \
         docker \
         gettext \
         make \
-        musl-dev \
         jq \
-        openssl-dev \
     && wget -q https://storage.googleapis.com/kubernetes-helm/helm-${HELM_VERSION}-linux-amd64.tar.gz -O - | tar -xzO linux-amd64/helm > /usr/local/bin/helm \
     && wget -q https://github.com/digitalocean/doctl/releases/download/v1.35.0/doctl-1.35.0-linux-amd64.tar.gz -O - | tar -xzO doctl > /usr/local/bin/doctl \
     && curl -LO https://storage.googleapis.com/kubernetes-release/release/`curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt`/bin/linux/amd64/kubectl \

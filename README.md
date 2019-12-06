@@ -86,7 +86,7 @@ The kube-toolbox for Digital Ocean is available with docker tag `enrise/kube-too
 The following additional packages are available:
 
 - `doctl`: this cli allows you to connect and interact with your Digital Ocean account.
-- `connect-kubernetes TODO`: connects you with your
+- `connect-kubernetes "<api_personal_access_token>" "<cluster_name>"`: connects you with your
   Kubernetes cluster on Digital Ocean directly
 
 ```yml
@@ -99,7 +99,7 @@ deploy to digital ocean kubernetes:
   only:
     - master
   before_script:
-    - connect-kubernetes TODO
+    - connect-kubernetes "<api_personal_access_token>" "<cluster_name>"
   script:
     - envsubst < dev/kube/manifest.yml > manifest.yml
     - kubectl apply -f manifest.yml

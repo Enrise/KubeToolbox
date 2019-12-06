@@ -81,7 +81,30 @@ deploy to azure:
 
 ## Digital Ocean
 
-TODO: We do not have a kube-toolbox for digital ocean available YET. This will come in the future.
+The kube-toolbox for Digital Ocean is available with docker tag `enrise/kube-toolbox:digital-ocean`.
+
+The following additional packages are available:
+
+- `doctl`: this cli allows you to connect and interact with your Digital Ocean account.
+- `connect-kubernetes TODO`: connects you with your
+  Kubernetes cluster on Digital Ocean directly
+
+```yml
+deploy to digital ocean kubernetes:
+  stage: deploy
+  image: enrise/kube-toolbox:digital-ocean
+  environment:
+    name: production
+    url: https://example.com
+  only:
+    - master
+  before_script:
+    - connect-kubernetes TODO
+  script:
+    - envsubst < dev/kube/manifest.yml > manifest.yml
+    - kubectl apply -f manifest.yml
+    - kubectl rollout status deployment -n "<namespace>" "<deployment-name>"
+```
 
 ## Google Cloud
 

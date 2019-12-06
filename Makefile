@@ -11,20 +11,28 @@ intro:
 # Main commands
 # ===========================
 
-build: intro do-build-amazon do-build-azure do-build-google
+build: intro do-build-amazon do-build-azure do-build-google build-digital-ocean
 build-amazon: intro do-build-amazon
 build-azure: intro do-build-azure
 build-google: intro do-build-google
+build-digital-ocean: intro do-build-digital-ocean
 
-test: intro do-test-amazon do-test-azure do-test-google
+test: intro do-test-amazon do-test-azure do-test-google test-digital-ocean
 test-amazon: intro do-test-amazon
 test-azure: intro do-test-azure
 test-google: intro do-test-google
+test-digital-ocean: intro do-test-digital-ocean
 
-push: intro do-push-amazon do-push-azure do-push-google
+push: intro do-push-amazon do-push-azure do-push-google push-digital-ocean
 push-amazon: intro do-push-amazon
 push-azure: intro do-push-azure
 push-google: intro do-push-google
+push-digital-ocean: intro do-push-digital-ocean
+
+amazon: intro do-build-amazon do-test-amazon
+azure: intro do-build-azure do-test-azure
+google: intro do-build-google do-test-google
+digital-ocean: intro do-build-digital-ocean do-test-digital-ocean
 
 # ===========================
 # Comon recipes
@@ -59,6 +67,12 @@ do-build-google:
 	@echo ""
 	docker build -t enrise/kube-toolbox:google ./Google
 
+do-build-digital-ocean:
+	@echo ""
+	@echo "=== Build Digital Ocean Kubernetes toolbox ==="
+	@echo ""
+	docker build -t enrise/kube-toolbox:digital-ocean ./DigitalOcean
+
 # Test commands
 
 do-test-amazon:
@@ -88,6 +102,15 @@ do-test-google:
 	docker run --rm enrise/kube-toolbox:google kubectl version 2>&1 | grep -q version.Info
 	docker run --rm enrise/kube-toolbox:google gcloud --version 2>&1 | grep -q "Google Cloud SDK"
 
+do-test-digital-ocean:
+	@echo ""
+	@echo "=== Test Digital Ocean Kubernetes toolbox ==="
+	@echo ""
+	docker run --rm enrise/kube-toolbox:digital-ocean connect-kubernetes | grep -q Usage
+	docker run --rm enrise/kube-toolbox:digital-ocean helm version 2>&1 | grep -q version.Version
+	docker run --rm enrise/kube-toolbox:digital-ocean kubectl version 2>&1 | grep -q version.Info
+	docker run --rm enrise/kube-toolbox:digital-ocean doctl version 2>&1 | grep -q "doctl version"
+
 # Push commands
 
 do-push-amazon:
@@ -107,3 +130,9 @@ do-push-google:
 	@echo "=== Push Google Kubernetes toolbox ==="
 	@echo ""
 	docker push enrise/kube-toolbox:google
+
+do-push-digital-ocean:
+	@echo ""
+	@echo "=== Push Google Kubernetes toolbox ==="
+	@echo ""
+	docker push enrise/kube-toolbox:digital-ocean

@@ -8,4 +8,4 @@
 #gcloud auth activate-service-account --key-file "$1"
 #gcloud container clusters get-credentials "$4" --project "$3" --zone "$2"
 
-echo "Sorry, this is not ready yet. Please stand by."
+echo "Usage: Sorry, this is not ready yet. Please stand by."

@@ -2,7 +2,7 @@ FROM google/cloud-sdk:alpine
 
 # Note: Latest version of helm may be found at:
 # https://github.com/kubernetes/helm/releases
-ENV HELM_VERSION="v2.16.1"
+ENV HELM_VERSION="v2.16.10"
 
 # Copy over the connection helper script
 COPY connect-kubernetes.sh /usr/local/bin/connect-kubernetes

@@ -22,6 +22,7 @@ RUN apk add --update --no-cache \
         python3 \
         python3-dev \
         py3-pip \
+        git \
     && wget -q https://storage.googleapis.com/kubernetes-helm/helm-${HELM_VERSION}-linux-amd64.tar.gz -O - | tar -xzO linux-amd64/helm > /usr/local/bin/helm \
     && pip3 install azure-cli --upgrade \
     && apk del gcc libffi-dev openssl-dev \

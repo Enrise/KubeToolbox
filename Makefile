@@ -80,7 +80,7 @@ do-test-amazon:
 	@echo "=== Test Amazon Kubernetes toolbox ==="
 	@echo ""
 	docker run --rm enrise/kube-toolbox:amazon connect-kubernetes | grep -q Usage
-	docker run --rm enrise/kube-toolbox:amazon helm version 2>&1 | grep -q version.Version
+	docker run --rm enrise/kube-toolbox:amazon helm version 2>&1 | grep -q version.BuildInfo
 	docker run --rm enrise/kube-toolbox:amazon kubectl version 2>&1 | grep -q version.Info
 	docker run --rm enrise/kube-toolbox:amazon aws --version | grep -q aws-cli
 
@@ -89,7 +89,7 @@ do-test-azure:
 	@echo "=== Test Azure Kubernetes toolbox ==="
 	@echo ""
 	docker run --rm enrise/kube-toolbox:azure connect-kubernetes | grep -q Usage
-	docker run --rm enrise/kube-toolbox:azure helm version 2>&1 | grep -q version.Version
+	docker run --rm enrise/kube-toolbox:azure helm version 2>&1 | grep -q version.BuildInfo
 	docker run --rm enrise/kube-toolbox:azure kubectl version 2>&1 | grep -q version.Info
 	docker run --rm enrise/kube-toolbox:azure az --version | grep -q azure-cli
 
@@ -98,7 +98,7 @@ do-test-google:
 	@echo "=== Test Google Kubernetes toolbox ==="
 	@echo ""
 	docker run --rm enrise/kube-toolbox:google connect-kubernetes | grep -q Usage
-	docker run --rm enrise/kube-toolbox:google helm version 2>&1 | grep -q version.Version
+	docker run --rm enrise/kube-toolbox:google helm version 2>&1 | grep -q version.BuildInfo
 	docker run --rm enrise/kube-toolbox:google kubectl version 2>&1 | grep -q version.Info
 	docker run --rm enrise/kube-toolbox:google gcloud --version 2>&1 | grep -q "Google Cloud SDK"
 
@@ -107,7 +107,7 @@ do-test-digital-ocean:
 	@echo "=== Test Digital Ocean Kubernetes toolbox ==="
 	@echo ""
 	docker run --rm enrise/kube-toolbox:digital-ocean connect-kubernetes | grep -q Usage
-	docker run --rm enrise/kube-toolbox:digital-ocean helm version 2>&1 | grep -q version.Version
+	docker run --rm enrise/kube-toolbox:digital-ocean helm version 2>&1 | grep -q version.BuildInfo
 	docker run --rm enrise/kube-toolbox:digital-ocean kubectl version 2>&1 | grep -q version.Info
 	docker run --rm enrise/kube-toolbox:digital-ocean doctl version 2>&1 | grep -q "doctl version"
 

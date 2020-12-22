@@ -2,7 +2,7 @@ FROM google/cloud-sdk:alpine
 
 # Note: Latest version of helm may be found at:
 # https://github.com/kubernetes/helm/releases
-ENV HELM_VERSION="v2.16.10"
+ENV HELM_VERSION="v3.4.2"
 
 # Copy over the connection helper script
 COPY connect-kubernetes.sh /usr/local/bin/connect-kubernetes
@@ -13,9 +13,9 @@ RUN apk add --update --no-cache \
         curl \
         docker \
         gettext \
+        git \
         make \
         jq \
-        git \
-    && wget -q https://storage.googleapis.com/kubernetes-helm/helm-${HELM_VERSION}-linux-amd64.tar.gz -O - | tar -xzO linux-amd64/helm > /usr/local/bin/helm \
+    && wget -q https://get.helm.sh/helm-${HELM_VERSION}-linux-amd64.tar.gz -O - | tar -xzO linux-amd64/helm > /usr/local/bin/helm \
     && gcloud components install beta kubectl \
     && chmod +x /usr/local/bin/*

@@ -2,7 +2,7 @@ FROM alpine:3.12
 
 # Note: Latest version of helm may be found at:
 # https://github.com/kubernetes/helm/releases
-ENV HELM_VERSION="v3.4.2"
+ENV HELM_VERSION="v3.9.0"
 
 # Copy over the connection helper script
 COPY connect-kubernetes.sh /usr/local/bin/connect-kubernetes

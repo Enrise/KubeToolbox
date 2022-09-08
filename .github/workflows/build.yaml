@@ -4,6 +4,9 @@ on:
   push:
     branches: [ master ]
   pull_request:
+  schedule:
+    - cron: "0 3 * * 1" # Run every Monday at 3:00
+
 
 jobs:
   build:

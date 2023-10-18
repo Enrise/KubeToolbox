@@ -143,7 +143,7 @@ key file manually first as follows:
 ```yaml
   before_script:
     - echo $SERVICE_ACCOUNT_JSON_KEY > /tmp/.gcloud_private_key
-    - connect-google-cloud /tmp/.gcloud_private_key "<region>" "<project>" "<cluster_name>"
+    - connect-kubernetes /tmp/.gcloud_private_key "<region>" "<project>" "<cluster_name>"
 ```
 
 # Tips

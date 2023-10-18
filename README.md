@@ -47,7 +47,7 @@ deploy to amazon web services:
   before_script:
     - connect-kubernetes "<aws_access_key_id>" "<aws_secret_access_key>" "<region>" "<cluster_name>"
   script:
-    - envsubst < dev/kube/manifest.yml > manifest.yml
+    - envsubst < kubernetes/manifest.yml > manifest.yml
     - kubectl apply -f manifest.yml
     - kubectl rollout status deployment -n "<namespace>" "<deployment-name>"
 ```
@@ -74,7 +74,7 @@ deploy to azure:
   before_script:
     - connect-kubernetes "<azure_account_username>" <azure_account_password>" "<resource_group>" "<cluster_name>"
   script:
-    - envsubst < dev/kube/manifest.yml > manifest.yml
+    - envsubst < kubernetes/manifest.yml > manifest.yml
     - kubectl apply -f manifest.yml
     - kubectl rollout status deployment -n "<namespace>" "<deployment-name>"
 ```
@@ -101,7 +101,7 @@ deploy to digital ocean kubernetes:
   before_script:
     - connect-kubernetes "<api_personal_access_token>" "<cluster_name>"
   script:
-    - envsubst < dev/kube/manifest.yml > manifest.yml
+    - envsubst < kubernetes/manifest.yml > manifest.yml
     - kubectl apply -f manifest.yml
     - kubectl rollout status deployment -n "<namespace>" "<deployment-name>"
 ```
@@ -128,7 +128,7 @@ deploy to google cloud platform:
   before_script:
     - connect-kubernetes $SERVICE_ACCOUNT_KEY_FILE "<region>" "<project>" "<cluster_name>"
   script:
-    - envsubst < dev/kube/manifest.yml > manifest.yml
+    - envsubst < kubernetes/manifest.yml > manifest.yml
     - kubectl apply -f manifest.yml
     - kubectl rollout status deployment -n "<namespace>" "<deployment-name>"
 ```
@@ -144,4 +144,30 @@ key file manually first as follows:
   before_script:
     - echo $SERVICE_ACCOUNT_JSON_KEY > /tmp/.gcloud_private_key
     - connect-google-cloud /tmp/.gcloud_private_key "<region>" "<project>" "<cluster_name>"
+```
+
+# Tips
+
+Some tips that might be helpful to you
+
+## Recursive envsubst
+
+With the following magic line, you can replace all environment variables in the `*.yml` files, recursively:
+
+```shell
+find . -iname \*.yml -type f -exec sh -c 'envsubst < $0 > $0.tmp && mv $0.tmp $0' {} \;
+```
+
+Another trick to make it more readable in your CI file:
+
+```yaml
+.replace-environment-variables-recursively: &replace-environment-variables-recursively |
+    find . -iname \*.yml -type f -exec sh -c 'envsubst < $0 > $0.tmp && mv $0.tmp $0' {} \;
+
+deploy to kubernetes:
+  script:
+    - cd kubernetes/
+    - *replace-environment-variables-recursively
+    - kubectl apply -f manifest.yml
+    - kubectl rollout status deployment -n "<namespace>" "<deployment-name>"
 ```

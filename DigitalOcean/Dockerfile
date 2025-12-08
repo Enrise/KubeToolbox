@@ -1,4 +1,4 @@
-FROM alpine:3.22
+FROM alpine:3.23
 
 # Note: Latest version of helm may be found at:
 # https://github.com/kubernetes/helm/releases
